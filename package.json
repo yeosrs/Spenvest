@@ -1,0 +1,30 @@
+{
+  "name": "spenvest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server",
+    "dev": "nodemon backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeosrs/Spenvest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yeosrs/Spenvest/issues"
+  },
+  "homepage": "https://github.com/yeosrs/Spenvest#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongoose": "^6.1.10",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
