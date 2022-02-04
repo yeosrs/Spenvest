@@ -2,12 +2,14 @@ const express = require("express");
 const pool = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 app.use(express.json());
 
 app.use("/users", userRoutes);
 app.use("/transactions", transactionRoutes);
+app.use("/auth", authRoutes);
 
 pool.connect((err, pool, release) => {
   if (err) {

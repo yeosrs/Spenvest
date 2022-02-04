@@ -1,5 +1,7 @@
 const express = require("express");
 const pool = require("../config/db");
+const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -10,11 +12,16 @@ router.post("/", async (req, res) => {
       name,
       address,
       contact_number,
-      hashed_password,
+      password,
       monthly_pay,
       savings_target,
       deleted,
     } = req.body;
+
+    hashed_password = CryptoJS.AES.encrypt(
+      password,
+      "$h0w-m3-th3-m0n3y"
+    ).toString();
     const newUser = await pool.query(
       "INSERT INTO users (email, name, address, contact_number, hashed_password, monthly_pay, savings_target, deleted) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [
@@ -29,7 +36,10 @@ router.post("/", async (req, res) => {
       ]
     );
 
-    res.json(newUser.rows[0]);
+    let userClone = { ...newUser.rows[0] };
+    delete userClone.hashed_password;
+    delete userClone.deleted;
+    res.status(200).json(userClone);
   } catch (error) {
     console.log(error);
   }
@@ -39,7 +49,7 @@ router.get("/", async (req, res) => {
   try {
     const allUsers = await pool.query("SELECT * FROM users");
 
-    res.json(allUsers.rows);
+    res.status(200).json(allUsers.rows);
   } catch (error) {
     console.log(error);
   }
@@ -55,7 +65,7 @@ router.delete("/:email", async (req, res) => {
       `UPDATE users SET deleted = True WHERE email LIKE '${req.params.email}' RETURNING *`
     );
 
-    res.json(delUser.rows);
+    res.status(200).json(delUser.rows);
   } catch (error) {
     console.log(error);
   }
@@ -120,7 +130,7 @@ router.put("/:email/edit", async (req, res) => {
       savings_target,
       deleted,
     ]);
-    res.json(editUser.rows);
+    res.status(200).json(editUser.rows);
   } catch (error) {
     console.log(error);
   }

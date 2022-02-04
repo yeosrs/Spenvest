@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/yeosrs/Spenvest#readme",
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.10",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4"

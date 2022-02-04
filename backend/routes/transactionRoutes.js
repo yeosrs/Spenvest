@@ -137,19 +137,7 @@ router.put("/:email/:transaction/edit", async (req, res) => {
       unit_price,
     ]);
 
-    // const query = `UPDATE transactions SET email = $1, vendor_name = $2, trans_type = $3, deleted = $4 WHERE transactions.transaction_id = ${req.params.transaction} RETURNING *`;
-    // const editTrans = await pool.query(query, [
-    //   email,
-    //   vendor_name,
-    //   trans_type,
-    //   deleted,
-    // ]);
-    // const query2 = `UPDATE purchases SET product_name = $1, quantity = $2, unit_price = $3 WHERE purchases.transaction_id = ${req.params.transaction} RETURNING *`;
-    // const editPur = await pool.query(query2, [
-    //   product_name,
-    //   quantity,
-    //   unit_price,
-    // ]);
+
     res.json(editTrans.rows);
   } catch (error) {
     console.log(error);
