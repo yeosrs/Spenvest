@@ -92,8 +92,6 @@ router.put("/:email/:transaction/edit", async (req, res) => {
       `SELECT * FROM transactions, purchases WHERE transactions.transaction_id = ${req.params.transaction}`
     );
 
-    res.json(currentValues.rows);
-
     if (email == null) {
       email = req.params.email;
     }
@@ -122,25 +120,37 @@ router.put("/:email/:transaction/edit", async (req, res) => {
       deleted = currentValues.rows[0].deleted;
     }
 
-    // );`
-    // const editUser = await pool.query(
-    //   `UPDATE users SET email = '${email}', name = '${name}', address = '${address}', contact_number=${contact_number}, hashed_password = '${hashed_password}', monthly_pay = ${monthly_pay}, savings_target = ${savings_target}, deleted = ${deleted} WHERE email LIKE '${req.params.email}' RETURNING *`
-    // );
-
-    const query = `UPDATE transactions SET email = $1, vendor_name = $2, trans_type = $3, deleted = $4 WHERE transactions.transaction_id = ${req.params.transaction} RETURNING *`;
+    const query = `WITH update_trans AS (
+      UPDATE transactions
+      SET email = $1,vendor_name = $2,trans_type = $3 ,deleted=$4 
+      WHERE transaction_id = ${req.params.transaction} 
+      RETURNING transaction_id) 
+      UPDATE purchases 
+      SET product_name = $5, quantity = $6, unit_price = $7 WHERE purchases.transaction_id = (SELECT transaction_ID from update_trans) RETURNING *`;
     const editTrans = await pool.query(query, [
       email,
       vendor_name,
       trans_type,
       deleted,
-    ]);
-    const query2 = `UPDATE purchases SET product_name = $1, quantity = $2, unit_price = $3 WHERE purchases.transaction_id = ${req.params.transaction} RETURNING *`;
-    const editPur = await pool.query(query2, [
       product_name,
       quantity,
       unit_price,
     ]);
-    res.json(editPur.rows);
+
+    // const query = `UPDATE transactions SET email = $1, vendor_name = $2, trans_type = $3, deleted = $4 WHERE transactions.transaction_id = ${req.params.transaction} RETURNING *`;
+    // const editTrans = await pool.query(query, [
+    //   email,
+    //   vendor_name,
+    //   trans_type,
+    //   deleted,
+    // ]);
+    // const query2 = `UPDATE purchases SET product_name = $1, quantity = $2, unit_price = $3 WHERE purchases.transaction_id = ${req.params.transaction} RETURNING *`;
+    // const editPur = await pool.query(query2, [
+    //   product_name,
+    //   quantity,
+    //   unit_price,
+    // ]);
+    res.json(editTrans.rows);
   } catch (error) {
     console.log(error);
   }
