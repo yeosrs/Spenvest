@@ -15,23 +15,17 @@ ADD COLUMN deleted BOOLEAN;
 
 CREATE TABLE transactions(
     transaction_id SERIAL PRIMARY KEY,
-    email VARCHAR(50),
     vendor_name VARCHAR(50),
     trans_type VARCHAR(10),
     ts TIMESTAMP,
     deleted BOOLEAN,
-    CONSTRAINT fk_user
-        FOREIGN KEY(email)
-            REFERENCES users(email)
+    email VARCHAR(50) REFERENCES users(email)
 );
 
 CREATE TABLE purchases (
     purchase_id SERIAL PRIMARY KEY,
-    transaction_id INT,
     product_name VARCHAR(50),
     quantity INT,
     unit_price INT,
-    CONSTRAINT fk_transaction
-        FOREIGN KEY(transaction_id)
-            REFERENCES transactions(transaction_id)
+    transaction_id INT REFERENCES transactions(transaction_id)
 );
