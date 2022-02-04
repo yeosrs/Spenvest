@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
     let userClone = { ...user.rows[0] };
     delete userClone.hashed_password;
     delete userClone.deleted;
-    res.status(200).json({ userClone, accessToken });
+    res.status(200).json({ accessToken });
   } catch (err) {
     res.status(500).json(err);
   }
