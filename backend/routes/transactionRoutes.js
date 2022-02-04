@@ -64,74 +64,86 @@ router.delete("/:email", async (req, res) => {
   }
 });
 
-// router.put("/:email/edit", async (req, res) => {
-//   try {
-//     let {
-//       email,
-//       name,
-//       address,
-//       contact_number,
-//       hashed_password,
-//       monthly_pay,
-//       savings_target,
-//       deleted,
-//     } = req.body;
-//     currentValues = await pool.query(
-//       `SELECT * FROM users WHERE email LIKE '${req.params.email}'`
-//     );
+router.delete("/:email/:transaction/delete", async (req, res) => {
+  try {
+    const delTrans = await pool.query(
+      `UPDATE transactions SET deleted = True WHERE transaction_id = ${req.params.transaction} RETURNING *`
+    );
 
-//     if (email == null) {
-//       email = req.params.email;
-//     }
+    res.json(delTrans.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-//     if (name == null) {
-//       name = currentValues.rows[0].name;
-//     }
+router.put("/:email/:transaction/edit", async (req, res) => {
+  try {
+    let {
+      email,
+      vendor_name,
+      trans_type,
+      deleted,
+      product_name,
+      quantity,
+      unit_price,
+    } = req.body;
 
-//     if (address == null) {
-//       address = currentValues.rows[0].address;
-//     }
+    currentValues = await pool.query(
+      `SELECT * FROM transactions, purchases WHERE transactions.transaction_id = ${req.params.transaction}`
+    );
 
-//     if (contact_number == null) {
-//       contact_number = currentValues.rows[0].contact_number;
-//     }
+    res.json(currentValues.rows);
 
-//     if (hashed_password == null) {
-//       hashed_password = currentValues.rows[0].hashed_password;
-//     }
+    if (email == null) {
+      email = req.params.email;
+    }
 
-//     if (monthly_pay == null) {
-//       monthly_pay = currentValues.rows[0].monthly_pay;
-//     }
+    if (vendor_name == null) {
+      vendor_name = currentValues.rows[0].vendor_name;
+    }
 
-//     if (savings_target == null) {
-//       savings_target = currentValues.rows[0].savings_target;
-//     }
+    if (trans_type == null) {
+      trans_type = currentValues.rows[0].trans_type;
+    }
 
-//     if (deleted == null) {
-//       deleted = currentValues.rows[0].deleted;
-//     }
+    if (product_name == null) {
+      product_name = currentValues.rows[0].product_name;
+    }
 
-//     // );`
-//     // const editUser = await pool.query(
-//     //   `UPDATE users SET email = '${email}', name = '${name}', address = '${address}', contact_number=${contact_number}, hashed_password = '${hashed_password}', monthly_pay = ${monthly_pay}, savings_target = ${savings_target}, deleted = ${deleted} WHERE email LIKE '${req.params.email}' RETURNING *`
-//     // );
+    if (quantity == null) {
+      quantity = currentValues.rows[0].quantity;
+    }
 
-//     const query = `UPDATE users SET email = $1, name = $2, address = $3, contact_number = $4, hashed_password = $5, monthly_pay = $6, savings_target = $7, deleted = $8 WHERE email LIKE '${req.params.email}' RETURNING *`;
-//     const editUser = await pool.query(query, [
-//       email,
-//       name,
-//       address,
-//       contact_number,
-//       hashed_password,
-//       monthly_pay,
-//       savings_target,
-//       deleted,
-//     ]);
-//     res.json(editUser.rows);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+    if (unit_price == null) {
+      unit_price = currentValues.rows[0].unit_price;
+    }
+
+    if (deleted == null) {
+      deleted = currentValues.rows[0].deleted;
+    }
+
+    // );`
+    // const editUser = await pool.query(
+    //   `UPDATE users SET email = '${email}', name = '${name}', address = '${address}', contact_number=${contact_number}, hashed_password = '${hashed_password}', monthly_pay = ${monthly_pay}, savings_target = ${savings_target}, deleted = ${deleted} WHERE email LIKE '${req.params.email}' RETURNING *`
+    // );
+
+    const query = `UPDATE transactions SET email = $1, vendor_name = $2, trans_type = $3, deleted = $4 WHERE transactions.transaction_id = ${req.params.transaction} RETURNING *`;
+    const editTrans = await pool.query(query, [
+      email,
+      vendor_name,
+      trans_type,
+      deleted,
+    ]);
+    const query2 = `UPDATE purchases SET product_name = $1, quantity = $2, unit_price = $3 WHERE purchases.transaction_id = ${req.params.transaction} RETURNING *`;
+    const editPur = await pool.query(query2, [
+      product_name,
+      quantity,
+      unit_price,
+    ]);
+    res.json(editPur.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;
