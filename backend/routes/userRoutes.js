@@ -2,9 +2,11 @@ const express = require("express");
 const pool = require("../config/db");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require("./verifyToken");
 
 const router = express.Router();
 
+//Create user account
 router.post("/", async (req, res) => {
   try {
     const {
@@ -18,6 +20,7 @@ router.post("/", async (req, res) => {
       deleted,
     } = req.body;
 
+    //encrypting password with AES
     hashed_password = CryptoJS.AES.encrypt(
       password,
       "$h0w-m3-th3-m0n3y"
@@ -35,7 +38,7 @@ router.post("/", async (req, res) => {
         deleted,
       ]
     );
-
+    // sending back saved data without password or deleted fields
     let userClone = { ...newUser.rows[0] };
     delete userClone.hashed_password;
     delete userClone.deleted;
@@ -45,6 +48,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//show all users
 router.get("/", async (req, res) => {
   try {
     const allUsers = await pool.query("SELECT * FROM users");
@@ -55,7 +59,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/:email", async (req, res) => {
+// "Delete" user account
+router.delete("/:email", verifyToken, async (req, res) => {
   try {
     // const delUser = await pool.query(
     //   `DELETE FROM users WHERE email LIKE '${req.params.email}' RETURNING *`
@@ -65,20 +70,20 @@ router.delete("/:email", async (req, res) => {
       `UPDATE users SET deleted = True WHERE email LIKE '${req.params.email}' RETURNING *`
     );
 
-    res.status(200).json(delUser.rows);
+    res.status(200).json(`User ${req.params.email} has been deleted`);
   } catch (error) {
     console.log(error);
   }
 });
 
-router.put("/:email/edit", async (req, res) => {
+router.put("/:email/edit", verifyToken, async (req, res) => {
   try {
     let {
       email,
       name,
       address,
       contact_number,
-      hashed_password,
+      password,
       monthly_pay,
       savings_target,
       deleted,
@@ -86,6 +91,15 @@ router.put("/:email/edit", async (req, res) => {
     currentValues = await pool.query(
       `SELECT * FROM users WHERE email LIKE '${req.params.email}'`
     );
+
+    let hashed_password = null;
+
+    if (req.body.password) {
+      hashed_password = CryptoJS.AES.encrypt(
+        req.body.password,
+        "$h0w-m3-th3-m0n3y"
+      ).toString();
+    }
 
     if (email == null) {
       email = req.params.email;
@@ -130,7 +144,9 @@ router.put("/:email/edit", async (req, res) => {
       savings_target,
       deleted,
     ]);
-    res.status(200).json(editUser.rows);
+    res
+      .status(200)
+      .json(editUser.rows);
   } catch (error) {
     console.log(error);
   }

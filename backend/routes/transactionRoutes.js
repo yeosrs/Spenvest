@@ -1,9 +1,11 @@
 const express = require("express");
 const pool = require("../config/db");
+const { verifyToken } = require("./verifyToken");
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+//Create transaction
+router.post("/", verifyToken, async (req, res) => {
   try {
     const {
       email,
@@ -36,10 +38,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:email", async (req, res) => {
+//Get all transactions by user
+router.get("/:email", verifyToken, async (req, res) => {
   try {
     const allTrans = await pool.query(
-      `SELECT * FROM transactions WHERE email LIKE '${req.params.email}'`
+      `SELECT * FROM transactions WHERE email LIKE '${req.params.email}' AND deleted = False`
     );
 
     res.json(allTrans.rows);
@@ -48,7 +51,8 @@ router.get("/:email", async (req, res) => {
   }
 });
 
-router.delete("/:email", async (req, res) => {
+// "Delete" all transactions by user
+router.delete("/:email", verifyToken, async (req, res) => {
   try {
     // const delTrans = await pool.query(
     //   `DELETE FROM transactions WHERE email LIKE '${req.params.email}' RETURNING *`
@@ -64,7 +68,8 @@ router.delete("/:email", async (req, res) => {
   }
 });
 
-router.delete("/:email/:transaction/delete", async (req, res) => {
+// "Delete" 1 transaction by user
+router.delete("/:email/:transaction/delete", verifyToken, async (req, res) => {
   try {
     const delTrans = await pool.query(
       `UPDATE transactions SET deleted = True WHERE transaction_id = ${req.params.transaction} RETURNING *`
@@ -76,7 +81,8 @@ router.delete("/:email/:transaction/delete", async (req, res) => {
   }
 });
 
-router.put("/:email/:transaction/edit", async (req, res) => {
+// Edit 1 transaction by user
+router.put("/:email/:transaction/edit", verifyToken, async (req, res) => {
   try {
     let {
       email,
@@ -136,7 +142,6 @@ router.put("/:email/:transaction/edit", async (req, res) => {
       quantity,
       unit_price,
     ]);
-
 
     res.json(editTrans.rows);
   } catch (error) {
