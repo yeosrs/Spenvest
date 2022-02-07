@@ -5,7 +5,7 @@ import CreateNewUser from "./Components/CreateNewUser";
 function App() {
   return (
     <div>
-      <CreateNewUser />
+      <Login/>
     </div>
   );
 }
