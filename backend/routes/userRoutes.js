@@ -144,9 +144,7 @@ router.put("/:email/edit", verifyToken, async (req, res) => {
       savings_target,
       deleted,
     ]);
-    res
-      .status(200)
-      .json(editUser.rows);
+    res.status(200).json(editUser.rows);
   } catch (error) {
     console.log(error);
   }

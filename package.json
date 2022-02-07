@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/yeosrs/Spenvest#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "create-react-app": "^1.2.1",
     "crypto-js": "^4.1.1",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
