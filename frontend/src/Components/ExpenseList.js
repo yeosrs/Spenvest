@@ -26,7 +26,6 @@ const ExpenseList = (props) => {
     let res = null;
     try {
       const url = `http://localhost:5001/transactions/${props.email}/`;
-      console.log(url);
       res = await axios.get(url, {
         headers: { token: `Bearer ${props.token}` },
       });
@@ -37,7 +36,7 @@ const ExpenseList = (props) => {
   };
 
   let display = cards.map((ele, index) => {
-    return <ExpenseCard display={ele} key={index} />;
+    return <ExpenseCard display={ele} key={index} token={props.token} />;
   });
   return (
     <>
