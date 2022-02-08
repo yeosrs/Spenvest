@@ -5,6 +5,7 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
 router.post("/login", async (req, res) => {
+  const email = req.body.email;
   try {
     const user = await pool.query(
       `SELECT * FROM users WHERE email LIKE '${req.body.email}'`
@@ -30,7 +31,7 @@ router.post("/login", async (req, res) => {
     let userClone = { ...user.rows[0] };
     delete userClone.hashed_password;
     delete userClone.deleted;
-    res.status(200).json({ accessToken });
+    res.status(200).json({ accessToken, email });
   } catch (err) {
     res.status(500).json(err);
   }

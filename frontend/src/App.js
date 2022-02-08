@@ -7,7 +7,7 @@ import CreateNewTransaction from "./Components/CreateNewTransaction.js";
 function App() {
   return (
     <div>
-      <CreateNewTransaction/>
+      <ExpenseList/>
     </div>
   );
 }
