@@ -22,15 +22,14 @@ const ExpenseList = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log("Props token " + props.token);
-  console.log("Props email " + props.email);
-
   const getUsersTransactions = async () => {
     let res = null;
     try {
       const url = `http://localhost:5001/transactions/${props.email}/`;
-      console.log(url)
-      res = await axios.get(url);
+      console.log(url);
+      res = await axios.get(url, {
+        headers: { token: `Bearer ${props.token}` },
+      });
       setCards(res.data);
     } catch (err) {
       console.log(err);
@@ -50,7 +49,7 @@ const ExpenseList = (props) => {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <CreateNewTransaction token = {props.token} email= {props.email}/>
+          <CreateNewTransaction token={props.token} email={props.email} />
         </Box>
       </Modal>
       {display}

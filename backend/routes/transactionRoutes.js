@@ -5,7 +5,7 @@ const { verifyToken } = require("./verifyToken");
 const router = express.Router();
 
 //Create transaction
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const {
       email,
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 });
 
 //Get all transactions by user
-router.get("/:email", async (req, res) => {
+router.get("/:email", verifyToken, async (req, res) => {
   try {
     const allTrans = await pool.query(
       `SELECT * FROM transactions,purchases WHERE email LIKE '${req.params.email}' AND deleted = False`

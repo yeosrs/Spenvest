@@ -57,15 +57,19 @@ const CreateNewTransaction = (props) => {
   const handleSubmit = async () => {
     try {
       const url = `http://localhost:5001/transactions`;
-      const res = await axios.post(url, {
-        email: props.email,
-        vendor_name: transactionState.vendor_name,
-        trans_type: transactionState.trans_type,
-        product_name: transactionState.product_name,
-        quantity: transactionState.quantity,
-        unit_price: transactionState.unit_price,
-        deleted: false,
-      });
+      const res = await axios.post(
+        url,
+        {
+          email: props.email,
+          vendor_name: transactionState.vendor_name,
+          trans_type: transactionState.trans_type,
+          product_name: transactionState.product_name,
+          quantity: transactionState.quantity,
+          unit_price: transactionState.unit_price,
+          deleted: false,
+        },
+        { headers: { token: `Bearer ${props.token}` } }
+      );
       console.log(res);
     } catch (err) {
       console.log(err);
