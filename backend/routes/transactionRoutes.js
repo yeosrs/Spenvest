@@ -39,13 +39,26 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 //Get all transactions by user
-router.get("/:email", verifyToken, async (req, res) => {
+router.get("/:email", async (req, res) => {
   try {
     const allTrans = await pool.query(
-      `SELECT * FROM transactions WHERE email LIKE '${req.params.email}' AND deleted = False`
+      `SELECT * FROM transactions,purchases WHERE email LIKE '${req.params.email}' AND deleted = False`
     );
 
     res.json(allTrans.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//Get 1 transaction by user
+router.get("/:email/:id", async (req, res) => {
+  try {
+    const oneTrans = await pool.query(
+      `SELECT * FROM transactions,purchases WHERE transactions.transaction_id = ${req.params.id}`
+    );
+
+    res.json(oneTrans.rows);
   } catch (error) {
     console.log(error);
   }
