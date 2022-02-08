@@ -58,7 +58,7 @@ const CreateNewTransaction = (props) => {
     try {
       const url = `http://localhost:5001/transactions`;
       const res = await axios.post(url, {
-        email: "test@test.com",
+        email: props.email,
         vendor_name: transactionState.vendor_name,
         trans_type: transactionState.trans_type,
         product_name: transactionState.product_name,

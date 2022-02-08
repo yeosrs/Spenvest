@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import ExpenseCard from "./ExpenseCard";
 import axios from "axios";
-import { Button, Typography, Modal, Box } from "@mui/material";
+import { Button, Modal, Box } from "@mui/material";
 import CreateNewTransaction from "./CreateNewTransaction.js";
-import CreateNewUser from "./CreateNewUser";
 
 const style = {
   position: "absolute",
@@ -23,10 +22,14 @@ const ExpenseList = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  console.log("Props token " + props.token);
+  console.log("Props email " + props.email);
+
   const getUsersTransactions = async () => {
     let res = null;
     try {
-      const url = `http://localhost:5001/transactions/test@test.com/`;
+      const url = `http://localhost:5001/transactions/${props.email}/`;
+      console.log(url)
       res = await axios.get(url);
       setCards(res.data);
     } catch (err) {
@@ -47,7 +50,7 @@ const ExpenseList = (props) => {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <CreateNewTransaction />
+          <CreateNewTransaction token = {props.token} email= {props.email}/>
         </Box>
       </Modal>
       {display}

@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { Button, TextField } from "@mui/material/";
+import PropTypes from "prop-types";
 const axios = require("axios");
 
 // get imput
@@ -25,7 +26,7 @@ const loginReducer = (loginState, action) => {
   }
 };
 
-const Login = (props) => {
+const Login = ({ setToken, setEmail }) => {
   const [loginState, loginDispatcher] = useReducer(loginReducer, {
     email: "",
     password: "",
@@ -38,7 +39,8 @@ const Login = (props) => {
         email: loginState.email,
         password: loginState.password,
       });
-      console.log(res);
+      setToken(res.data.accessToken);
+      setEmail(res.data.email);
     } catch (err) {
       console.log(err);
     }
@@ -76,6 +78,9 @@ const Login = (props) => {
       <Button variant="contained">Create New Account</Button>
     </>
   );
+};
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
 };
 
 export default Login;

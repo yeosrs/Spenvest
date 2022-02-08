@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "./Components/Login";
-import CreateNewUser from "./Components/CreateNewUser";
 import ExpenseList from "./Components/ExpenseList";
-import CreateNewTransaction from "./Components/CreateNewTransaction.js";
 
 function App() {
+  const [token, setToken] = useState();
+  const [email, setEmail] = useState();
+
+  if (!token) {
+    return <Login setToken={setToken} setEmail={setEmail} />;
+  }
+
   return (
     <div>
-      <ExpenseList/>
+      <ExpenseList token={token} email={email} />
     </div>
   );
 }
