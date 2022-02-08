@@ -5,7 +5,7 @@ const { verifyToken } = require("./verifyToken");
 const router = express.Router();
 
 //Create transaction
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       email,

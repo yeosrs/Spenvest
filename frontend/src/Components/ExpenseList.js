@@ -31,7 +31,7 @@ const ExpenseList = () => {
   });
   return (
     <>
-      <Button onClick={getUsersTransactions}>Click</Button>
+      <Button variant="contained" onClick={getUsersTransactions}>Click</Button>
       {display}
     </>
   );
