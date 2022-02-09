@@ -72,16 +72,16 @@ const CreateNewUser = (props) => {
       );
       setHideButton(true);
     } else if (
-      userState.email == "" ||
-      userState.confirm_email == "" ||
-      userState.password == "" ||
-      userState.confirm_password == ""
+      userState.email === "" ||
+      userState.confirm_email === "" ||
+      userState.password === "" ||
+      userState.confirm_password === ""
     ) {
       setError("Email and password fields need to be filled");
       setHideButton(true);
     } else if (
-      userState.email != userState.confirm_email ||
-      userState.password != userState.confirm_password
+      userState.email !== userState.confirm_email ||
+      userState.password !== userState.confirm_password
     ) {
       setError("Email and password fields need to match");
       setHideButton(true);

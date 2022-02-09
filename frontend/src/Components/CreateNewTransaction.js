@@ -146,7 +146,7 @@ const CreateNewTransaction = (props) => {
       Eth : {transactionState.total_spent * 1.5 ** 10}
       <br />
       <br />
-      {transactionState.trans_type == "Need" ? (
+      {transactionState.trans_type === "Need" ? (
         <Button
           variant="contained"
           onClick={() => handleSubmit(transactionState)}

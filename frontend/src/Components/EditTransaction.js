@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -214,7 +214,7 @@ const EditTransaction = (props) => {
       <br />
       <br />
       <br />
-      {oneTrans.trans_type == "Need" ? (
+      {oneTrans.trans_type === "Need" ? (
         <Button variant="contained" onClick={handleSubmit}>
           Submit New Transaction
         </Button>
