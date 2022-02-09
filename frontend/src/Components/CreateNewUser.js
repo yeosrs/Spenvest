@@ -1,25 +1,24 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material/";
 const axios = require("axios");
 
 // check if email, passwords match
 // check with backend if email exists?
 // format checking for rest of fields
-// send to server to create new account
 
 const registerReducer = (userState, action) => {
   switch (action.type) {
     case "email-change":
-      //   console.log(userState);
+      console.log(userState);
       return { ...userState, email: action.payload };
     case "confirm_email-change":
-      //   console.log(userState);
+      console.log(userState);
       return { ...userState, confirm_email: action.payload };
     case "password-change":
-      //   console.log(userState);
+      console.log(userState);
       return { ...userState, password: action.payload };
     case "confirm_password-change":
-      //   console.log(userState);
+      console.log(userState);
       return {
         ...userState,
         confirm_password: action.payload,
@@ -46,6 +45,8 @@ const registerReducer = (userState, action) => {
 };
 
 const CreateNewUser = (props) => {
+  const [error, setError] = useState("");
+  const [hideButton, setHideButton] = useState(false);
   const [userState, UserDispatcher] = useReducer(registerReducer, {
     email: "",
     confirm_email: "",
@@ -57,6 +58,32 @@ const CreateNewUser = (props) => {
     monthly_pay: null,
     savings_target: null,
   });
+
+  useEffect(() => {
+    if (
+      isNaN(
+        userState.contact_number ||
+          userState.monthly_pay ||
+          userState.savings_target
+      )
+    ) {
+      setError(
+        "Contact Number, Monthly Pay and Savings Target needs to be a number without $"
+      );
+      setHideButton(true);
+    } else if (
+      userState.email == "" ||
+      userState.confirm_email == "" ||
+      userState.password == "" ||
+      userState.confirm_password == ""
+    ) {
+      setError("Email and password fields need to be filled");
+      setHideButton(true);
+    } else {
+      setError("Everything looks good!");
+      setHideButton(false);
+    }
+  }, [userState]);
 
   const handleSubmit = async () => {
     try {
@@ -184,10 +211,14 @@ const CreateNewUser = (props) => {
       <br />
       <br />
       <br />
-
-      <Button variant="contained" onClick={() => handleSubmit(userState)}>
-        Create New Account
-      </Button>
+      {error}
+      {hideButton ? (
+        <Button></Button>
+      ) : (
+        <Button variant="contained" onClick={() => handleSubmit(userState)}>
+          Create New Account
+        </Button>
+      )}
     </>
   );
 };
