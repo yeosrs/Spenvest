@@ -220,7 +220,9 @@ const CreateNewUser = (props) => {
       <br />
       {error}
       {hideButton ? (
-        <Button></Button>
+        <Button variant="contained" color="error">
+          Error
+        </Button>
       ) : (
         <Button variant="contained" onClick={() => handleSubmit(userState)}>
           Create New Account

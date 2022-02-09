@@ -34,6 +34,8 @@ const axios = require("axios");
 // };
 
 const EditTransaction = (props) => {
+  const [error, setError] = useState("");
+  const [hideButton, setHideButton] = useState(false);
   const [oneTrans, setOneTrans] = useState({
     vendor_name: "",
     trans_type: "",
@@ -66,28 +68,16 @@ const EditTransaction = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("oneTrans saved");
-    console.log(oneTrans);
-    // editDispatcher({
-    //   type: "vendor-change",
-    //   payload: oneTrans.vendor_name,
-    // });
-    // editDispatcher({
-    //   type: "trans-change",
-    //   payload: oneTrans.trans_type,
-    // });
-    // editDispatcher({
-    //   type: "product-change",
-    //   payload: oneTrans.product_name,
-    // });
-    // editDispatcher({
-    //   type: "quanity-change",
-    //   payload: oneTrans.quantity,
-    // });
-    // editDispatcher({
-    //   type: "unit_price-change",
-    //   payload: oneTrans.unit_price,
-    // });
+    if (isNaN(oneTrans.quantity || oneTrans.unit_price)) {
+      setError("Quantity and Price needs to be a number without $");
+      setHideButton(true);
+    } else if (oneTrans.product_name === "") {
+      setError("Item field needs to be filled");
+      setHideButton(true);
+    } else {
+      setError("Everything looks good!");
+      setHideButton(false);
+    }
   }, [oneTrans]);
 
   // const [editState, editDispatcher] = useReducer(editReducer, {
@@ -215,13 +205,13 @@ const EditTransaction = (props) => {
       <br />
       <br />
       <br />
-      {oneTrans.trans_type === "Need" ? (
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit New Transaction
-        </Button>
+      {error}
+      <br />
+      {hideButton ? (
+        <Button variant="contained" color="error">Error</Button>
       ) : (
         <Button variant="contained" onClick={handleSubmit}>
-          I Really Really Want It!
+          Submit Edits
         </Button>
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -35,6 +35,7 @@ const transactionReducer = (transactionState, action) => {
 };
 
 const CreateNewTransaction = (props) => {
+  const [error, setError] = useState("");
   const [transactionState, transactionDispatcher] = useReducer(
     transactionReducer,
     {
@@ -46,6 +47,18 @@ const CreateNewTransaction = (props) => {
       total_spent: null,
     }
   );
+
+  useEffect(() => {
+    if (isNaN(transactionState.quantity || transactionState.unit_price)) {
+      setError(
+        "Quantity and Price of each item needs to be a number without $"
+      );
+    } else if (transactionState.product_name === "") {
+      setError("Item field needs to be filled");
+    } else {
+      setError("Everything looks good!");
+    }
+  }, [transactionState]);
 
   const handleToggleChange = (event) => {
     transactionDispatcher({
@@ -147,6 +160,7 @@ const CreateNewTransaction = (props) => {
       Eth : {transactionState.total_spent * 1.5 ** 10}
       <br />
       <br />
+      {error}
       {transactionState.trans_type === "Need" ? (
         <Button
           variant="contained"
