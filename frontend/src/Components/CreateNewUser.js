@@ -103,6 +103,7 @@ const CreateNewUser = (props) => {
         monthly_pay: userState.monthly_pay,
         savings_target: userState.savings_target,
       });
+      props.handleClose();
       console.log(res);
     } catch (err) {
       console.log(err);

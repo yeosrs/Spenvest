@@ -70,6 +70,7 @@ const CreateNewTransaction = (props) => {
         },
         { headers: { token: `Bearer ${props.token}` } }
       );
+      props.handleClose();
       console.log(res);
     } catch (err) {
       console.log(err);

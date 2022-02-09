@@ -96,7 +96,7 @@ const Login = ({ setToken, setEmail }) => {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <CreateNewUser />
+          <CreateNewUser handleClose={handleClose}/>
         </Box>
       </Modal>
     </>

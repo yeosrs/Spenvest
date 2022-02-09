@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -136,6 +136,7 @@ const EditTransaction = (props) => {
         },
         { headers: { token: `Bearer ${props.token}` } }
       );
+      props.handleClose();
       console.log(res);
     } catch (err) {
       console.log(err);

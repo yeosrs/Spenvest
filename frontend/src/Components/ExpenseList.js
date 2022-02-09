@@ -48,7 +48,11 @@ const ExpenseList = (props) => {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <CreateNewTransaction token={props.token} email={props.email} />
+          <CreateNewTransaction
+            token={props.token}
+            email={props.email}
+            handleClose={handleClose}
+          />
         </Box>
       </Modal>
       {display}

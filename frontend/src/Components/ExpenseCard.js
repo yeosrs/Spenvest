@@ -65,6 +65,7 @@ function ExpenseCard(props) {
                   token={props.token}
                   email={props.display.email}
                   transID={props.display.transaction_id}
+                  handleClose={handleClose}
                 />
               </Box>
             </Modal>
