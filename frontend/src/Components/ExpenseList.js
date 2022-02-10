@@ -35,6 +35,10 @@ const ExpenseList = (props) => {
     }
   };
 
+  const logout = () => {
+    props.setToken();
+  };
+
   let display = cards.map((ele, index) => {
     return (
       <div>
@@ -59,6 +63,9 @@ const ExpenseList = (props) => {
           />
         </Box>
       </Modal>
+      <Button variant="contained" onClick={logout}>
+        Logout
+      </Button>
       {display}
     </>
   );

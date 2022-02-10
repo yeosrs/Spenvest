@@ -1,3 +1,9 @@
 /node_modules
 /frontend/node_modules
 .DS_Store
+frontend/src/Components/Chart.js
+frontend/src/Components/Deposits.js
+frontend/src/Components/ExpenseListTheme.js
+frontend/src/Components/Expenses.js
+frontend/src/Components/listItems.js
+frontend/src/Components/Title.js
