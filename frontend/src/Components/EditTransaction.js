@@ -208,7 +208,9 @@ const EditTransaction = (props) => {
       {error}
       <br />
       {hideButton ? (
-        <Button variant="contained" color="error">Error</Button>
+        <Button variant="contained" color="error">
+          Error
+        </Button>
       ) : (
         <Button variant="contained" onClick={handleSubmit}>
           Submit Edits

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Login from "./Components/Login";
 import ExpenseList from "./Components/ExpenseList";
+import LoginTheme from "./Components/LoginTheme";
 
 function App() {
   const [token, setToken] = useState();
@@ -9,8 +10,8 @@ function App() {
   if (!token) {
     return (
       <div className="page">
-        <h3>Spenvest</h3>
-        <Login setToken={setToken} setEmail={setEmail} />;
+        {/* <Login setToken={setToken} setEmail={setEmail} />; */}
+        <LoginTheme setToken={setToken} setEmail={setEmail} />
       </div>
     );
   }
