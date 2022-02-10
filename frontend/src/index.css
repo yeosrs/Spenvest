@@ -25,3 +25,11 @@ div {
   justify-content: center;
   align-items: center;
 }
+
+.page {
+  margin: 3rem auto;
+  text-align: center;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}

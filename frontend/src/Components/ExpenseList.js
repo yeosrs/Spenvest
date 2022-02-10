@@ -36,7 +36,11 @@ const ExpenseList = (props) => {
   };
 
   let display = cards.map((ele, index) => {
-    return <ExpenseCard display={ele} key={index} token={props.token} />;
+    return (
+      <div>
+        <ExpenseCard display={ele} key={index} token={props.token} />
+      </div>
+    );
   });
   return (
     <>

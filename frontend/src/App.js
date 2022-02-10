@@ -7,11 +7,16 @@ function App() {
   const [email, setEmail] = useState();
 
   if (!token) {
-    return <Login setToken={setToken} setEmail={setEmail} />;
+    return (
+      <div className="page">
+        <h3>Spenvest</h3>
+        <Login setToken={setToken} setEmail={setEmail} />;
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="page">
       <ExpenseList token={token} email={email} />
     </div>
   );

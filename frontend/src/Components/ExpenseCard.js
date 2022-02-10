@@ -26,7 +26,9 @@ const style = {
 function ExpenseCard(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const deleteTransaction = async () => {
     let res = null;
@@ -46,7 +48,7 @@ function ExpenseCard(props) {
         <CardContent>
           <Typography variant="body2">
             Item: {props.display.product_name} <br />
-            Quantity: {props.quantity}
+            Quantity: {props.display.quantity}
             <br />
             Price: {props.display.unit_price}
             <br />
