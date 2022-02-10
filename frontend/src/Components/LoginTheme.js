@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Modal } from "@mui/material";
+import { Modal, useScrollTrigger } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateNewUser from "./CreateNewUser";
@@ -63,6 +63,7 @@ const theme = createTheme();
 
 const LoginTheme = ({ setToken, setEmail }) => {
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [loginState, loginDispatcher] = useReducer(loginReducer, {
@@ -80,6 +81,7 @@ const LoginTheme = ({ setToken, setEmail }) => {
       setEmail(res.data.email);
     } catch (err) {
       console.log(err);
+      setError(err.message);
     }
   };
 
@@ -152,6 +154,7 @@ const LoginTheme = ({ setToken, setEmail }) => {
                   })
                 }
               />
+              {error}
               <Button
                 fullWidth
                 variant="contained"
