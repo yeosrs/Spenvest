@@ -42,7 +42,7 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/:email", verifyToken, async (req, res) => {
   try {
     const allTrans = await pool.query(
-      `SELECT * FROM transactions,purchases WHERE email LIKE '${req.params.email}' AND deleted = False`
+      `SELECT * FROM transactions,purchases WHERE transactions.transaction_id=purchases.transaction_id AND email = '${req.params.email}' AND deleted = False`
     );
 
     res.json(allTrans.rows);
@@ -55,7 +55,7 @@ router.get("/:email", verifyToken, async (req, res) => {
 router.get("/:email/:id", verifyToken, async (req, res) => {
   try {
     const oneTrans = await pool.query(
-      `SELECT * FROM transactions,purchases WHERE transactions.transaction_id = ${req.params.id}`
+      `SELECT * FROM transactions,purchases WHERE transactions.transaction_id=purchases.transaction_id AND transactions.transaction_id = ${req.params.id}`
     );
 
     res.json(oneTrans.rows);
@@ -108,7 +108,7 @@ router.put("/:email/:transaction/edit", verifyToken, async (req, res) => {
     } = req.body;
 
     currentValues = await pool.query(
-      `SELECT * FROM transactions, purchases WHERE transactions.transaction_id = ${req.params.transaction}`
+      `SELECT * FROM transactions, purchases WHERE transactions.transaction_id=purchases.transaction_id AND transactions.transaction_id = ${req.params.transaction}`
     );
 
     if (email == null) {
