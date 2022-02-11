@@ -48,6 +48,17 @@ const ExpenseList = (props) => {
   });
   return (
     <>
+      <Box
+        component="img"
+        sx={{
+          height: 233,
+          width: 350,
+          maxHeight: { xs: 233, md: 167 },
+          maxWidth: { xs: 350, md: 250 },
+        }}
+        alt="Under Construction"
+        src="https://media.istockphoto.com/photos/webpage-under-construction-picture-id592021466"
+      /><br/>
       <Button variant="contained" onClick={getUsersTransactions}>
         Show Transactions
       </Button>
